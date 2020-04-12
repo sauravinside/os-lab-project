@@ -1,0 +1,141 @@
+Q3. Consider the following three threads and assume x and y are initially 0. Describe the
+race conditions in terms of these threads. Be specific. Using semaphore(s),
+initialized appropriately, add code to insure that thread T1 prints the value 3.
+You may assume the semaphores are initialized before any threads begin.
+Thread T1: print(x+y); Thread T2: x=1; Thread T3: y=2;
+
+#include <string> #include <vector> #include <iostream> #include <mutex>
+#include "exceptionhelper.h" #include <exception>
+
+
+namespace com::karan::mock::Thread
+{
+
+
+class ThreeThreadComunication : public Runnable
+{
+public:
+AtomicInteger *counter; std::vector<int> array; static std::mutex mutex;
+
+virtual ~ThreeThreadComunication()
+{
+delete counter;
+}
+
+ThreeThreadComunication(std::vector<int> &array, AtomicInteger
+*counter);
+
+void run() override;
+};
+
+}
+namespace com::sourav::mock::Thread
+{
+
+
+class ThreeThreadComunicationTest
+{
+static void main(std::vector<std::wstring> &args);
+
+};
+
+}
+
+class InterruptedException : public std::exception
+{
+private: std::string msg;
+
+public:
+InterruptedException(const std::string& message = "") : msg(message)
+{
+}
+
+const char * what() const throw()
+{
+return msg.c_str();
+}
+};
+
+//.cpp file code:
+
+#include "snippet.h"
+
+namespace com::sourav::mock::Thread
+{
+
+ThreeThreadComunication::ThreeThreadComunication(std::vector<int> &array, AtomicInteger *counter)
+{
+this->counter = counter; this->array = array;
+}
+
+void ThreeThreadComunication::run()
+{
+int i = 0;
+while (i < array.size())
+{
+ 
+
+
+
+counter->get())
+ 
+{
+std::scoped_lock<std::mutex> lock(mutex);
+if (static_cast<Integer>(Thread::currentThread().getName()) ==
+
+{
+std::wcout << array[i] << std::endl; if (counter->get() == 3)
+ 
+{
+
+}
+else
+{
+
+
+} i++;
+}
+ 
+
+counter->getAndSet(1);
+
+
+
+int c = counter->get(); counter->getAndSet(++c);
+ 
+
+mutex.notifyAll(); try
+{
+mutex.wait();
+}
+catch (const InterruptedException &e)
+{
+e->printStackTrace();
+}
+}
+}
+}
+}
+namespace com::sourav::mock::Thread
+{
+
+void ThreeThreadComunicationTest::main(std::vector<std::wstring> &args)
+{
+
+AtomicInteger *counter = new AtomicInteger(1); std::vector<int> array1 = {1, 4, 7};
+std::vector<int> array2 = {2, 5, 8};
+std::vector<int> array3 = {3, 6, 9};
+
+ThreeThreadComunication *obj1 = new ThreeThreadComunication(array1, counter); ThreeThreadComunication *obj2 = new ThreeThreadComunication(array2, counter); ThreeThreadComunication *obj3 = new ThreeThreadComunication(array3, counter);
+
+Thread *t1 = new Thread(obj1, L"1"); Thread *t2 = new Thread(obj2, L"2"); Thread *t3 = new Thread(obj3, L"3");
+
+t1->start();
+t2->start();
+t3->start();
+
+delete t3; delete t2;
+ 
+delete t1;
+}
+}
