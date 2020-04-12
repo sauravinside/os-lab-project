@@ -1,0 +1,80 @@
+Q4. WAP to implement Producer Consumer problem such that Maximum number of items produced by
+a producer are five. Producer should not produce any item if the buffer is full and should say
+“BUFFER IS ALREADY FULL” and the consumer should not consume if the buffer is empty. Problem
+should be implemented with the help of thread, semaphore and mutex lock.
+
+#include<stdio.h>
+#include<pthread.h>
+#include<semaphore.h>
+void *producers();
+void *consumers();
+int buffer[5];
+int i=0,j=0,data;
+int x=0;
+sem_t mutex,full,empty;
+pthread_t p[5],c[5];
+int main()
+{
+sem_init(&mutex,0,1);
+sem_init(&full,0,0);
+sem_init(&empty,0,5);
+pthread_t t,t1;
+pthread_create(&t,NULL,consumers,NULL);
+sleep(5);
+for(int s=0;s<5;s++)
+{
+pthread_create(&p[s],NULL,producers,NULL);
+sleep(5);
+pthread_create(&c[s],NULL,consumers,NULL);
+sleep(5);
+}
+pthread_join(t,NULL);
+for(int s = 0;s<5;s++)
+{
+pthread_join(p[s],NULL);
+pthread_join(c[s],NULL);
+}
+pthread_create(&t1,NULL,producers,NULL);
+pthread_join(t1,NULL);
+}
+void *producers()
+{
+printf("\n Producers code\n");
+if(x==5)
+{
+printf("BUFFER IS ALREADY FULL\n");
+}
+else
+{
+sem_wait(&mutex);
+sem_wait(&empty);
+printf("Enter the data to be produces\n");
+scanf("%d",&data);
+buffer[x]=data;
+x++;
+sem_post(&full);
+sem_post(&mutex);
+printf("Producer leaving the thread\n");
+}
+}
+void *consumers()
+{
+printf("\n Consumer Code\n");
+printf("Consumer thread enters\n");
+if(x==0)
+{
+printf("NO data to consume\n");
+}
+else
+{
+sem_wait(&full);
+sem_wait(&mutex);
+data = buffer[i];
+buffer[i]=0;
+i++;
+printf("%d\n",i);
+sem_post(&mutex);
+sem_post(&empty);
+printf("Leaving Consumer thread\n ");
+}
+}
