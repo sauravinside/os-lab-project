@@ -1,0 +1,245 @@
+OPERATING SYSTEM(CSE316)
+ASSIGNMENT (CA – 3)
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+SUBMITTED  BY:-SAURAV SINGH
+REGISTRATIONNO.:-11802301
+ROLL NO.:-70
+EMAIL ID:- singhsaurav400@gmail.com
+GITHUB LINK:- https://github.com/sauravinside/os-project/tree/master
+
+
+ACKNOWLEDGEMENT:-
+
+I would like to thank my respected teacher to provide me an opportunity to learn more by doing this project. Moreover, I would like to thank my friends who helps me to clear my doubts in some points. On the top, I would like to thank God for being able to complete this project successfully.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CONTENTS
+1.	Q no 1. ( Q no 3 according to the assignment)
+
+2.	Q no 2. ( Q no 24 according to the assignment)
+
+
+3.	Plagiarism Report  –  0% Plagiarised and 100% Uniqueness 
+Website - https://www.duplichecker.com/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Q no 1. ( Q no 3 according to the assignment)
+
+
+DESCRIPTION ABOUT THE PROBLEM:-
+The first problem is to print all the prime numbers ranging from 2 to n, where n will the input given by the user using multithreading concept, where the program will create separate thread to print the prime numbers upto n.
+
+
+ALGORITHM USED:-
+
+For the first problem, algorithm  used is:
+a)	First specify the required libraries to be used and in the define method, declare the number of threads you want to use, like, I have use 4 number of threads in the code.
+
+#define MAX_THREADS 4
+b.) Now, as we want to print the prime numbers upto a particular number , specify a pointer and N , so that we can dynamically provie the value to the system.
+
+int *prime_arr,N;
+c.) First define a function where all the conditions to print the prime numbers will be present ,like here, the function is:
+void *printprime(void *ptr);
+d.) In the main function input the value of N  which will specify the limit or value upto which the prime numbers need to be printed.
+e.) Then as we have already declare the maximum number of threads, create a thread variable, i.e, an array of length equal to the maximum number of threads, and using an iterator(ctr), create multiple threads, here four threads are created.
+scanf("%d",&N);
+    prime_arr=(int*)calloc(N, sizeof(int));
+    pthread_t tid[MAX_THREADS]={{0}};
+    int ctr=0;
+    for(ctr=0;ctr<MAX_THREADS;ctr++)
+    {
+        printf("\r\n CREATING THREADS %d",ctr);
+        pthread_create(&tid[ctr],NULL,printprime,(void*)ctr);
+    }
+
+f.) Then print the prime numbers and end the threads .
+for(ctr=0;ctr<MAX_THREADS;ctr++)
+    {
+        pthread_join(tid[ctr],NULL);
+    }
+
+    for(ctr=0;ctr<N;ctr++)
+        if(prime_arr[ctr]==1)
+            printf("%d ",ctr);
+
+CODE  SNIPPET:-
+ 
+ 
+
+Complexity of code
+
+Complexity of first program : O(N)
+
+OUTPUT OF THE CODE:-
+On the ubunto use the following commands to get the output->
+1.)	nano operatingca3.c           2.) gcc operatingca3.c              3.) ./a.out
+
+
+
+
+
+Output of first program:
+
+Input = 50
+ 
+
+
+CONSTRAINTS:-
+
+1.) The number N must be given by the user only.
+2.) While giving input, consider that number of processes and the number of resources are positive  only. Never take them as negative.
+3.) If deadlock occurs, then no process should execute and the system should display the user that the system is not in the safe state.
+4.) If all the above conditions are satisfied ,then the code should run smoothly.
+
+TEST CASES:-
+Test cases for first program
+a)	When N is negative, then only thread will be created, however, no prime numbers would be generated.
+When Input  N =  -50
+ 
+b.) When N is positive, then desired output will be printed.
+When Input  N  =  +50
+ 
+Q no 2. (Q no 24 according to the assignment)
+
+
+DESCRIPTION ABOUT THE PROBLEM:-
+As during the processes execution in the CPU, sometimes, due to conflicting requests for the same resources, results in the formation of chain, thus, resulting in the deadlock occurrence, which means processes are in unsafe state. So, to detect the deadlock occurrence, we need to develop a code to check whether the processes are in safe state or not, and to avoid this unsafe state what are the steps we need to taken, like specify the order of the execution of the processes to avoid deadlock occurrence.
+
+ALGORITHM USED:-
+
+For the second problem, algorithm used is:
+a.) First enter the number of resources and processes ready for execution.
+int p;                  //to store total number of process..
+ int r;                  //to store total types of resources used..
+b.) Declaration of the variables like all[p][r], md[p][r], avail[p][r],need[p][r] which tells the number of resources being allocated to each process, the maximum number of resources required by each process, and the total number of resources available to be allocated to the processes and the number of resources neede by a particular process respectively.
+int avail[r];                           
+  int md[p][r];                           
+    int need[p][r];                         
+    int all[p][r];    
+c.) Then by using the array concept, input the avail resources, needed resources , maximum number of resources required , by the processes ,like to enter the avail resources , we use:
+printf("Kindly enter the available resources for each respected resourse type: \n");
+    char rt=65;
+    int i,j,k,y;
+    for(i=0;i<r;i++)
+    {
+        printf("%c: ",rt);
+        scanf("%d",&avail[i]);
+        rt++;
+    }
+Same is the case for entering the needed ,maximum resources of the processes.
+d.) Then to check whether the program is in safe state or not, declare a not safe variable which is initialize to 0, and if the deadlock occurs, it gets incremented, then afterwards, if notsafe value is 0, then declare the process is in safe state, and provide the safe sequence of execution of the code , else, print that the process is not in safe state.
+int notsafe=0;
+    for(i=0;i<p;i++)
+    {
+        if(f[i]==0)
+        {
+            notsafe++;
+        }
+    }
+    if(notsafe==0)
+    {
+        printf("\n\nThe given values have a safe sequence.....\n");
+        printf("The SAFE Sequence is: ");
+        for (i=0;i<p-1; i++)
+        {
+            printf("P%d ->",ans[i]);
+        }
+        printf("P%d\n",ans[p-1]);
+    }
+    else
+    {
+        printf("\n\nOhhhh dear! The given values don't have a safe sequence.");
+    }
+
+
+
+CODE  SNIPPET:-
+ 
+ 
+ 
+ 
+
+Complexity of code
+
+Complexity of second program : O(cN)=O(N)
+
+OUTPUT OF THE CODE:-
+On the Ubuntu use the following commands to get the output->
+1.)	nano operatingca3.c           2.) gcc operatingca3.c              3.) ./a.out
+
+
+
+
+
+Output of Second program:
+Input = 
+ 2 2 1 2 2 1 2 3 3 2 1 2
+ 
+
+
+CONSTRAINTS:-
+1.) The number N must be given by the user only.
+2.) While giving input, consider that number of processes and the number of resources are positive  only. Never take them as negative.
+3.) If deadlock occurs, then no process should execute and the system should display the user that the system is not in the safe state.
+4.) If all the above conditions are satisfied ,then the code should run smoothly.
+
+
+TEST CASES:-
+
+Test Cases for the second program:
+a.)	When input satisfy all the constraints above, it would run smoothly
+ 
+
+b.)	Case when this fails
+ 
