@@ -1,0 +1,48 @@
+Q no 3. 
+Code:
+// we need to compile it with "gcc -pthread project1.c"
+
+#include<stdio.h>
+#include<stdlib.h>
+#include<pthread.h>
+void *o_func(void *arg)
+{
+        int inpt;
+        inpt=*((int*)arg);              // conversion of arguement to int data type...
+        printf("Okk inside the func in thread...\n");
+        printf("The prime numbes under %d are: ",inpt);
+        for(int i=2;i<=inpt;i++)
+        {
+                int count=0;
+                for(int k=2;k<=i/2;k++)
+                {
+                        if(i%k==0)
+                        {
+                                count++;
+                        }
+                }
+                if(count<1)
+                {
+                        printf("%d  ",i);
+                }
+                else if(inpt==2)
+                {                                                                                                                                                                                                                          printf("%d  ",inpt);                                                                                                                                                                                       }
+        }
+        printf("\n\n");
+        pthread_exit(NULL);
+}
+int main()
+{
+        pthread_t pt1;
+        int no;
+        printf("You need to enter any no here, then the next thread will print prime numbers before that number...... \n\n");
+        printf("Enter the number here: ");
+        scanf("%d",&no);
+        printf("Now the thread will begin....\n\n");
+        pthread_create(&pt1,NULL,o_func,(void *)&no);
+        //1.pointer to thread_id  2. specifies attributes  3. name of function  4.passing arguments
+        pthread_join(pt1,NULL);
+        //it's needed to block the calling thread until the thread with given first argument terminates.
+        printf("After thread ends.....\n");
+        return 0;
+}
